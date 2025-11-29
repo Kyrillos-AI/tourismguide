@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Egypt Holographic Interface V2</title>
+    <link rel="stylesheet" href="stylesmain.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="background-container">
+    <div class="cyber-floor"></div> <div class="floating-glyphs">
+        <span>𓀀</span> <span>𓁈</span> <span>𓃀</span> <span>𓃗</span> 
+        <span>𓆣</span> <span>𓉐</span> <span>𓊝</span> <span>𓋹</span>
+        <span>𓌳</span> <span>𓍝</span>
+    </div>
+    <div class="vignette-overlay"></div> </div>
+
+    <nav class="top-nav">
+        <div class="nav-logo">EGYPT <span class="sub-logo">ANCIENT FUTURE TOURS</span></div>
+        <div class="nav-links">
+            <a href="index.html" class="active">HOME</a>
+            <a href="#">DESTINATIONS</a>
+            <a href="#">HISTORY</a>
+        </div>
+        
+        <button class="login-btn">LOGIN</button>
+    </nav>
+
+    <div class="map-viewport">
+        <div class="world-map" id="egyptMap">
+            
+            <svg class="map-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                        <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                    
+                    <pattern id="techGrid" ... >
+    <path d="..." fill="none" stroke="rgba(255, 215, 0, 0.15)" stroke-width="0.5"/>
+</pattern>
+                </defs>
+
+                <path class="land-shape" d="M 150 200 L 450 200 L 480 230 L 520 230 L 540 350 L 600 450 L 600 700 L 450 700 L 450 750 L 150 700 Z" />
+                
+                <path class="nile-shape" d="M 375 700 L 375 600 Q 360 550 390 500 T 400 400 T 380 300 L 380 250 L 350 210 M 380 250 L 410 210" />
+                
+                <path class="water-detail" d="M 480 230 L 490 300" />
+
+                <path class="water-detail" d="M 350 700 Q 380 680 400 700" />
+            </svg>
+
+            <div class="focus-target" id="targetBox">
+                <div class="corner c-ul"></div>
+                <div class="corner c-ur"></div>
+                <div class="corner c-bl"></div>
+                <div class="corner c-br"></div>
+                <span class="target-label">ANALYZING SECTOR...</span>
+            </div>
+
+            <div class="gps-pin" data-location="cairo" style="top: 32%; left: 51%;">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="pin-dot"></div>
+                <div class="pin-ripple"></div>
+                <span class="pin-name">CAIRO</span>
+            </div>
+
+            <div class="gps-pin" data-location="alexandria" style="top: 28%; left: 42%;">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="pin-dot"></div>
+                <div class="pin-ripple"></div>
+                <span class="pin-name">ALEXANDRIA</span>
+            </div>
+
+            <div class="gps-pin" data-location="siwa" style="top: 36%; left: 28%;">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="pin-dot"></div>
+                <div class="pin-ripple"></div>
+                <span class="pin-name">SIWA</span>
+            </div>
+
+            <div class="gps-pin" data-location="sharm" style="top: 38%; left: 65%;">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="pin-dot"></div>
+                <div class="pin-ripple"></div>
+                <span class="pin-name">SHARM</span>
+            </div>
+
+            <div class="gps-pin" data-location="hurghada" style="top: 45%; left: 60%;">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="pin-dot"></div>
+                <div class="pin-ripple"></div>
+                <span class="pin-name">HURGHADA</span>
+            </div>
+
+            <div class="gps-pin" data-location="luxor" style="top: 58%; left: 54%;">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="pin-dot"></div>
+                <div class="pin-ripple"></div>
+                <span class="pin-name">LUXOR</span>
+            </div>
+
+            <div class="gps-pin" data-location="marsa" style="top: 65%; left: 66%;">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="pin-dot"></div>
+                <div class="pin-ripple"></div>
+                <span class="pin-name">MARSA ALAM</span>
+            </div>
+
+            <div class="gps-pin" data-location="aswan" style="top: 73%; left: 52%;">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="pin-dot"></div>
+                <div class="pin-ripple"></div>
+                <span class="pin-name">ASWAN</span>
+            </div>
+            <div class="gps-pin" data-location="fayoum" style="top: 36%; left: 45%;">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="pin-dot"></div>
+                <div class="pin-ripple"></div>
+                <span class="pin-name">FAYOUM</span>
+            </div>
+
+            <div class="gps-pin" data-location="minya" style="top: 45%; left: 48%;">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="pin-dot"></div>
+                <div class="pin-ripple"></div>
+                <span class="pin-name">MINYA</span>
+            </div>
+
+            <div class="gps-pin" data-location="edfu" style="top: 66%; left: 52%;">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="pin-dot"></div>
+                <div class="pin-ripple"></div>
+                <span class="pin-name">EDFU</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-panel" id="infoPanel">
+        <div class="panel-header">
+            <h2 id="panelTitle">LOCATION</h2>
+            <p class="panel-sub" id="panelSub">SECTOR ANALYSIS</p>
+        </div>
+        <div class="tech-divider"></div>
+        <div class="attraction-list" id="attractionsList"></div>
+        <button class="close-btn" id="closePanel">RESET VIEW</button>
+    </div>
+    <div class="modal-overlay" id="detailModal">
+<div class="modal-content">
+        <i class="fas fa-times close-modal-btn" id="closeModalIcon"></i>
+        
+        <div class="slideshow-box">
+            <img id="modalRealImage" src="" alt="View" class="slide-img">
+            
+            <button class="nav-btn prev" id="prevSlide">&#10094;</button>
+            <button class="nav-btn next" id="nextSlide">&#10095;</button>
+            
+            <div class="slide-count" id="slideCounter">1 / 1</div>
+        </div>
+
+        <h2 class="modal-title" id="mTitle">TITLE</h2>
+        <p class="modal-desc" id="mDesc">Description...</p>
+        <button class="login-btn" style="width: 100%;">START VIRTUAL TOUR</button>
+    </div>
+</div>
+
+    <script src="main.js"></script>
+    
+</body>
+</html>

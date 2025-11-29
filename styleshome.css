@@ -1,0 +1,186 @@
+:root {
+    --neon-cyan: #FFD700;  /* Bright Gold */
+    --neon-blue: #DAA520;  /* Darker Gold (for the river) */
+    --neon-gold: #FFD700;
+    --dark-bg: #050500;    /* Warm Black */
+    --glass: rgba(20, 15, 5, 0.95); /* Tinted Glass */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--dark-bg);
+    font-family: 'Orbitron', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    color: white;
+}
+
+/* 1. BACKGROUND IMAGE HANDLING */
+.bg-layer {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('HomeBG.jpg'); /* YOUR UPLOADED FILE NAME */
+    background-size: cover;
+    background-position: center;
+    z-index: -2;
+    filter: brightness(0.6) contrast(1.2); /* Darkens it to make UI pop */
+}
+
+/* CRT Scanline Effect Overlay */
+.scanlines {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+    background-size: 100% 4px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* 2. TOP LEFT HUD (The Hexagon Grid) */
+.holo-hud-container {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    width: 300px;
+}
+
+.holo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.hex-item {
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    background: rgba(0, 243, 255, 0.05);
+    padding: 10px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--neon-blue);
+    clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%); /* Tech Shape */
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.hex-item:hover {
+    background: var(--neon-blue);
+    color: black;
+    box-shadow: 0 0 15px var(--neon-blue);
+}
+
+.hex-item i { display: block; font-size: 1.5rem; margin-bottom: 5px; }
+
+.holo-text {
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--neon-blue);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    opacity: 0.8;
+    margin-bottom: 10px;
+}
+
+.hud-line {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--neon-blue), transparent);
+}
+
+/* 3. SLANTED BEAMS (The Diagonal Lines) */
+.slanted-beam {
+    position: absolute;
+    background: linear-gradient(180deg, transparent, var(--neon-blue), transparent);
+    opacity: 0.5;
+    z-index: 0;
+    width: 2px;
+    height: 200%; /* Extra long to cover screen */
+}
+
+
+
+
+/* 4. MAIN BUTTON (Bottom Right - The glowing box) */
+.hero-interface {
+    position: absolute;
+    bottom: 80px;
+    right: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pyramid-trigger {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* The Triangle Hologram on top */
+.holo-triangle {
+    width: 0; 
+    height: 0; 
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 30px solid var(--neon-blue);
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 10px var(--neon-blue));
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); opacity: 0.8; }
+    50% { transform: translateY(-10px); opacity: 1; }
+}
+
+.cyber-btn-main {
+    background: transparent;
+    border: 2px solid var(--neon-blue);
+    color: var(--neon-blue);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    padding: 15px 40px;
+    text-transform: uppercase;
+    cursor: pointer;
+    letter-spacing: 3px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.2), inset 0 0 10px rgba(0, 243, 255, 0.1);
+    border-radius: 5px;
+    transition: 0.3s;
+    z-index: 10;
+}
+
+.cyber-btn-main:hover {
+    background: var(--neon-blue);
+    color: black;
+    box-shadow: 0 0 40px var(--neon-blue);
+}
+
+/* Floor Ripples */
+.ripple {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%) rotateX(70deg);
+    border: 2px solid var(--neon-blue);
+    border-radius: 50%;
+    opacity: 0;
+    animation: ripple-anim 3s infinite linear;
+}
+
+.r1 { width: 100px; height: 100px; animation-delay: 0s; }
+.r2 { width: 160px; height: 160px; animation-delay: 1.5s; }
+
+@keyframes ripple-anim {
+    0% { width: 50px; height: 50px; opacity: 1; border-width: 3px; }
+    100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; }
+}
+
+
