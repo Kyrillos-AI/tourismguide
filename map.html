@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>خريطة الخلود | Map of Eternity</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="map.css">
+</head>
+<body>
+
+    <div id="preloader">
+        <div class="loader-container">
+            <div class="ring-outer"></div>
+            <div class="ring-inner"></div>
+            <div class="pyramid-core"></div>
+            <p class="loading-text" data-lang="loading">جاري تحمـيل الخـريطه</p>
+        </div>
+    </div>
+
+    <div class="bg-container">
+        <div class="tech-grid"></div>
+    </div>
+
+    <nav>
+        <div class="nav-left">
+            <div class="logo">
+                <img src="logo.png" alt="Logo" class="logo-img">
+                <span data-lang="logo">مصر القديمة</span>
+            </div>
+            <div class="lang-switch">
+                <span id="lang-ar" class="active">عربي</span> | <span id="lang-en">EN</span>
+            </div>
+        </div>
+        <div class="search-wrap">
+            <i class="fas fa-search"></i>
+            <input type="text" id="mapSearch" placeholder="بحث...">
+        </div>
+        <a href="index.html" class="back-link" data-lang="back">الرئـيسيـه</a>
+        
+    </nav>
+<!-- FILTER SYSTEM -->
+    <div class="filter-wrapper">
+        <!-- 1. The Trigger Button (Top Right/Left) -->
+        <button id="filterToggle" class="filter-trigger">
+            <i class="fas fa-filter"></i>
+            <span data-lang="filter_title">تصنيف</span>
+        </button>
+
+    <!-- BOTTOM FLOATING DOCK -->
+    <div class="filter-dock">
+        <button class="filter-btn active" data-filter="all" data-lang="filter_all">الكل</button>
+        <button class="filter-btn" data-filter="ancient" data-lang="filter_ancient">آثار مصر القديمة</button>
+        <button class="filter-btn" data-filter="sea" data-lang="filter_sea">بحار وشواطىْ</button>
+        <button class="filter-btn" data-filter="nature" data-lang="filter_nature"> طبيعة وواحات</button>
+        <button class="filter-btn" data-filter="religious" data-lang="filter_religious">سياحه دينية</button>
+        <button class="filter-btn" data-filter="delta" data-lang="filter_delta">مدن الدلتا</button>
+    </div>
+    <main class="map-viewport">
+        <div class="map-transform-layer" id="mapLayer">
+            <svg class="egypt-map" viewBox="0 0 600 750">
+                <path class="land-path" d="M120,50 L480,50 L520,120 L530,300 L580,450 L580,680 L40,680 L40,150 Z" />
+                <path class="nile-path" d="M300,680 C310,600 290,550 300,500 C320,450 280,400 300,350 C310,300 300,250 300,200 L270,160 M300,200 L330,160" />
+            </svg>
+            <div id="pinsContainer"></div>
+        </div>
+
+        <aside class="city-panel" id="cityPanel">
+            <div class="panel-header">
+                <h2 id="cpTitle">--</h2>
+            </div>
+            <p class="panel-desc" id="cpDesc">--</p>
+            <div class="sites-section">
+                <h3 data-lang="sites_title">أماكن للزيارة</h3>
+                <div class="custom-scroll" id="sitesList"></div>
+            </div>
+            <button id="resetZoom" class="panel-reset-btn">
+        <i class="fas fa-globe-africa"></i> 
+        <span data-lang="reset_view">العـوده</span>
+    </button>
+        </aside>
+
+        <div class="site-modal" id="siteModal">
+            <div class="modal-card">
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+                <div class="modal-image-box">
+                    <img id="smImage" src="" alt="Site">
+                </div>
+                <div class="modal-content">
+                    <h2 id="smTitle">--</h2>
+                    <p id="smDesc">--</p>
+                    <a href="#" class="modal-btn" data-lang="visit_now">احجز جولة</a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <script src="map.js"></script>
+</body>
+</html>

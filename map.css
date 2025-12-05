@@ -1,0 +1,756 @@
+/* =========================================
+   1. FONTS IMPORTS (استعادة الخطوط)
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&family=Reem+Kufi:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Raleway:wght@300;400&display=swap');
+
+:root {
+    --gold: #D4AF37;
+    --gold-glow: rgba(212, 175, 55, 0.6);
+    --cyan: #00E5FF;
+    --cyan-glow: rgba(0, 229, 255, 0.6);
+    --green: #2ecc71;
+    --green-glow: rgba(46, 204, 113, 0.6);
+    --dark-bg: #020202;
+    --glass: rgba(5, 5, 8, 0.96);
+    --text: #f4f1ea;
+    
+    /* تعريف الخطوط */
+    --font-ar-title: 'Reem Kufi', sans-serif;
+    --font-ar-text: 'Cairo', sans-serif;
+    --font-en-title: 'Cinzel', serif;
+    --font-en-text: 'Raleway', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--dark-bg); color: var(--text);
+    font-family: var(--font-ar-text);
+    height: 100vh; width: 100vw; overflow: hidden;
+}
+
+/* تخصيص الخطوط حسب اللغة */
+body.english-mode { direction: ltr; font-family: var(--font-en-text); }
+body.english-mode h2, body.english-mode h3, body.english-mode .logo { font-family: var(--font-en-title); }
+
+/* العناوين العربية */
+h1, h2, h3, .logo, .pin-label, .panel-title, .modal-btn {
+    font-family: var(--font-ar-title);
+}
+
+/* =========================================
+   2. BACKGROUND & ANIMATION
+   ========================================= */
+.bg-container { position: fixed; inset: 0; z-index: -2; background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
+background-image: url('HomeBG.png'); 
+    
+    /* Ensures the image covers the whole screen */
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; }
+
+.tech-grid {
+    position: absolute; inset: 0; 
+    background-image: 
+        linear-gradient(rgba(212,175,55,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212,175,55,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    perspective: 1000px; transform: rotateX(60deg) scale(2);
+    opacity: 0.5; pointer-events: none;
+    animation: gridMove 20s linear infinite;
+}
+@keyframes gridMove { 0% { transform: rotateX(60deg) scale(2) translateY(0); } 100% { transform: rotateX(60deg) scale(2) translateY(40px); } }
+
+/* =========================================
+   3. NAVIGATION
+   ========================================= */
+nav {
+    position: fixed; top: 0; width: 100%; padding: 1rem 3rem; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    
+    /* GLASSMORPHISM EFFECT */
+    background: rgba(5, 5, 5, 0.6); /* Semi-transparent */
+    backdrop-filter: blur(15px);     /* The Blur Effect */
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+.nav-left { display: flex; align-items: center; gap: 20px; }
+.logo { display: flex; align-items: center; gap: 10px; color: var(--gold); font-size: 1.5rem; }
+.logo-img { width: 35px; filter: drop-shadow(0 0 5px var(--gold)); }
+.lang-switch { 
+    cursor: pointer; 
+    font-weight: bold; 
+    border: none;       /* Removed Border */
+    background: none;   /* Removed Background */
+    padding: 2px 10px; 
+    font-size: 0.9rem; 
+    color: #aaa;        /* Default grey like home button */
+    transition: 0.3s;
+}
+.lang-switch span.active { 
+    color: var(--gold); 
+    border-bottom: 1px solid var(--gold); /* Tiny underline for active lang */
+}
+.lang-switch:hover {
+    color: var(--gold); /* Gold on hover */
+}
+
+.search-wrap {
+    /* ABSOLUTE CENTERING */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* Moves it back by half its width to center perfectly */
+    
+    /* Existing Styles */
+    background: rgba(0,0,0,0.6); 
+    border: 1px solid var(--gold);
+    padding: 8px 20px; 
+    border-radius: 30px; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    width: 350px;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.1); 
+    transition: 0.3s;
+    z-index: 10;
+}
+.search-wrap:focus-within { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); background: rgba(0,0,0,0.9); }
+.search-wrap input { background: transparent; border: none; color: white; width: 100%; outline: none; font-family: inherit; }
+.search-wrap i { color: var(--gold); }
+
+.back-link { text-decoration: none; color: #aaa; font-size: 0.9rem; transition: 0.3s; font-family: var(--font-ar-text); }
+.back-link:hover { color: var(--gold); }
+
+/* =========================================
+   4. MAP STYLES
+   ========================================= */
+/* =========================================
+   MAP VIEWPORT FIX
+   ========================================= */
+.map-viewport {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1200px; 
+    overflow: hidden; 
+    z-index: 1; /* Ensure it is behind the Nav (z-index 100) */
+    padding-top: 60px; /* Pushes map down slightly so top isn't hidden */
+}
+
+.map-transform-layer {
+    position: relative;
+    width: 600px; 
+    height: 750px;
+    transform-style: preserve-3d;
+    transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+    /* Scale down slightly on small screens to fit */
+    transform: scale(0.9); 
+}
+
+/* Mobile Adjustment */
+@media screen and (max-width: 768px) {
+    .map-transform-layer {
+        transform: scale(0.65); /* Shrink map on mobile */
+        margin-top: 50px;
+    }
+}
+.map-transform-layer {
+    position: relative; width: 600px; height: 750px; /* Adjusted Aspect Ratio for Egypt */
+    transform-style: preserve-3d;
+    transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.radar-scan {
+    position: absolute; top: 50%; left: 50%; width: 150%; height: 150%;
+    transform: translate(-50%, -50%);
+    background: conic-gradient(from 0deg, transparent 0%, transparent 80%, rgba(212, 175, 55, 0.1) 100%);
+    border-radius: 50%; animation: radar 4s linear infinite; pointer-events: none; z-index: -1;
+}
+@keyframes radar { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+.egypt-map { width: 100%; height: 100%; filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.2)); }
+.land-path {
+    fill: rgba(20, 20, 25, 0.85); 
+    stroke: var(--gold); 
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+    /* The Animation */
+    animation: mapPulse 4s infinite alternate ease-in-out;
+}
+.nile-path {
+    fill: none; stroke: var(--cyan); stroke-width: 3; stroke-linecap: round;
+    filter: drop-shadow(0 0 8px var(--cyan));
+    stroke-dasharray: 20; animation: flow 30s linear infinite;
+}
+@keyframes flow { to { stroke-dashoffset: -1000; } }
+
+/* =========================================
+   5. PINS (أيقونات ملونة)
+   ========================================= */
+.map-pin {
+    position: absolute; transform: translate(-50%, -50%);
+    display: flex; flex-direction: column; align-items: center;
+    cursor: pointer; z-index: 10; transition: 0.4s;
+}
+
+.pin-icon {
+    width: 45px; height: 45px;
+    background: rgba(0,0,0,0.8);
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    color: var(--gold); font-size: 1.1rem;
+    box-shadow: 0 0 15px var(--gold-glow);
+    transition: 0.3s; backdrop-filter: blur(5px);
+    flex-shrink: 0;
+}
+
+/* Color Coding */
+.map-pin[data-type="sea"] .pin-icon { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 15px var(--cyan-glow); }
+.map-pin[data-type="oasis"] .pin-icon, .map-pin[data-type="nature"] .pin-icon { border-color: var(--green); color: var(--green); box-shadow: 0 0 15px var(--green-glow); }
+
+/* Pulse Animation */
+.pin-pulse {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 60px; height: 60px; border: 1px solid var(--gold); border-radius: 50%;
+    animation: pulse 2s infinite; pointer-events: none; opacity: 0;
+}
+.map-pin[data-type="sea"] .pin-pulse { border-color: var(--cyan); }
+.map-pin[data-type="oasis"] .pin-pulse { border-color: var(--green); }
+.map-pin[data-type="nature"] .pin-pulse { border-color: var(--green); }
+
+/* Pin Label */
+.pin-label {
+    margin-top: 8px; font-size: 0.9rem; font-weight: bold;
+    background: rgba(0,0,0,0.8); padding: 3px 10px; border-radius: 4px; border: 1px solid #333;
+    white-space: nowrap; transition: 0.3s; color: #ddd;
+}
+
+/* Hover Effects */
+.map-pin:hover { z-index: 50; transform: translate(-50%, -65%) scale(1.15); }
+.map-pin:hover .pin-icon { background: var(--gold); color: #000; box-shadow: 0 0 30px var(--gold); }
+.map-pin[data-type="sea"]:hover .pin-icon { background: var(--cyan); color: #000; box-shadow: 0 0 30px var(--cyan); }
+.map-pin[data-type="oasis"]:hover .pin-icon { background: var(--green); color: #000; box-shadow: 0 0 30px var(--green); }
+.map-pin[data-type="nature"]:hover .pin-icon { background: var(--green); color: #000; box-shadow: 0 0 30px var(--green); }
+
+/* =========================================
+   FLOATING SIDE PANEL
+   ========================================= */
+.city-panel {
+    position: fixed;
+    top: 50%; /* Center Vertically */
+    right: -500px; /* Hidden off-screen */
+    width: 400px;
+    height: 75vh; /* Not full height, just 75% */
+    
+    /* Floating Card Look */
+    transform: translateY(-50%); 
+    background: rgba(10, 12, 15, 0.95); /* Dark Glass */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    
+    /* Borders & shape */
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    box-shadow: -10px 10px 50px rgba(0, 0, 0, 0.8), 
+                0 0 20px rgba(212, 175, 55, 0.1);
+    
+    z-index: 200;
+    transition: right 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy entry */
+    
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+}
+
+/* Active State (Slide in) */
+.city-panel.open {
+    right: 30px; /* Floats 30px from the edge */
+}
+
+/* English Mode Mirror */
+body.english-mode .city-panel {
+    left: -500px;
+    right: auto;
+}
+body.english-mode .city-panel.open {
+    left: 30px;
+}
+
+/* Panel Header */
+.panel-header {
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    padding-bottom: 15px;
+}
+.panel-header h2 {
+    color: var(--gold);
+    font-size: 2rem;
+    margin: 0;
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+/* Scrollable Area */
+.sites-section {
+    flex-grow: 1; /* Fills remaining space */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Contains the scroll */
+}
+
+.sites-section h3 {
+    color: var(--cyan);
+    margin-bottom: 15px;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+}
+
+/* The List Itself */
+#sitesList {
+    overflow-y: auto; /* Enables Scroll */
+    padding-right: 10px; /* Space for scrollbar */
+    padding-left: 5px;
+}
+
+/* Close Button */
+.close-panel {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid #333;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex; align-items: center; justify-content: center;
+}
+.close-panel:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    transform: rotate(90deg);
+}
+body.english-mode .close-panel {
+    left: auto;
+    right: 15px;
+}
+
+/* MOBILE ADJUSTMENT */
+@media screen and (max-width: 768px) {
+    .city-panel {
+        width: 100%;
+        height: 60vh; /* Bottom sheet on mobile */
+        top: auto;
+        bottom: -70vh;
+        right: 0;
+        left: 0;
+        transform: none; /* Remove vertical center */
+        border-radius: 25px 25px 0 0;
+        border: none;
+        border-top: 2px solid var(--gold);
+    }
+    .city-panel.open {
+        right: 0;
+        bottom: 0;
+    }
+    body.english-mode .city-panel.open {
+        left: 0;
+    }
+}
+
+/* =========================================
+   CUSTOM SCROLLBAR (Theme Matching)
+   ========================================= */
+.custom-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    margin: 10px 0; /* Spacing from top/bottom */
+    border-radius: 10px;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, var(--gold), var(--gold-glow));
+    border-radius: 10px;
+    border: 1px solid #000;
+}
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+    background: #fff;
+    box-shadow: 0 0 10px var(--gold);
+}
+
+.panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+.panel-header h2 { color: var(--gold); font-size: 2.5rem; margin: 0; }
+.panel-desc { color: #bbb; line-height: 1.7; margin-bottom: 30px; font-size: 0.95rem; }
+
+.site-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 15px; background: rgba(255,255,255,0.03); border: 1px solid transparent;
+    border-radius: 6px; margin-bottom: 8px; cursor: pointer; transition: 0.3s;
+}
+.site-item:hover { border-color: var(--gold); background: rgba(212, 175, 55, 0.1); transform: translateX(-5px); }
+.site-item span { font-weight: bold; font-size: 0.9rem; }
+.site-item i { color: var(--gold); font-size: 0.8rem; }
+
+.close-panel { background: none; border: none; color: #666; font-size: 1.5rem; cursor: pointer; transition: 0.3s; }
+.close-panel:hover { color: var(--gold); transform: rotate(90deg); }
+
+.panel-reset-btn {
+    margin-top: 20px; /* Space from the list */
+    width: 100%;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: inherit; /* Inherits Cairo/Raleway */
+    font-weight: bold;
+    font-size: 1rem;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-shrink: 0; /* Prevents squashing */
+}
+
+.panel-reset-btn:hover {
+    background: var(--gold);
+    color: #000;
+    box-shadow: 0 0 20px var(--gold-glow);
+    transform: translateY(-2px);
+}
+
+.panel-reset-btn i {
+    font-size: 1.2rem;
+}
+/* =========================================
+   7. SITE DETAIL MODAL (HIGH-TECH UPGRADE)
+   ========================================= */
+
+/* The Modal Overlay */
+.site-modal {
+    position: fixed; inset: 0; 
+    background: rgba(0,0,0,0.95); /* Darker for focus */
+    z-index: 300;
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; pointer-events: none; 
+    transition: 0.4s; backdrop-filter: blur(10px);
+}
+.site-modal.active { opacity: 1; pointer-events: all; }
+
+/* The Card Itself */
+.modal-card {
+    width: 650px; max-width: 90%; 
+    background: linear-gradient(145deg, #0b0b0b 0%, #050505 100%);
+    border: 1px solid var(--gold);
+    border-radius: 15px; 
+    overflow: hidden; 
+    transform: scale(0.9) translateY(20px); 
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 80px rgba(212, 175, 55, 0.15);
+    position: relative;
+}
+.site-modal.active .modal-card { transform: scale(1) translateY(0); }
+
+/* --- ANIMATED IMAGE BOX --- */
+.modal-image-box { 
+    height: 300px; 
+    position: relative; 
+    overflow: hidden; 
+    border-bottom: 2px solid var(--gold);
+}
+
+/* 1. The Image Pan Animation */
+.modal-image-box img { 
+    width: 100%; height: 100%; 
+    object-fit: cover; 
+    animation: panImage 20s infinite alternate linear;
+}
+
+/* 2. The Tech Grid Overlay */
+.modal-image-box::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(212,175,55,0.1) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(212,175,55,0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+    opacity: 0.3; pointer-events: none; z-index: 2;
+}
+
+/* 4. Vignette for Drama */
+.img-overlay {
+    position: absolute; inset: 0; 
+    background: radial-gradient(circle, transparent 40%, #000 120%);
+    z-index: 2;
+}
+
+/* --- THE NEW CLOSE BUTTON --- */
+.close-modal {
+    position: absolute; top: 15px; right: 15px; 
+    width: 45px; height: 45px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    color: var(--gold);
+    font-size: 1.2rem;
+    display: flex; justify-content: center; align-items: center;
+    cursor: pointer; z-index: 20;
+    transition: 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Bouncy hover */
+    backdrop-filter: blur(5px);
+}
+
+.close-modal:hover {
+    background: var(--gold);
+    color: #000;
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 0 20px var(--gold-glow);
+}
+
+body.english-mode .close-modal {
+    right: 15px; left: auto; /* Ensure it stays right even in English mode */
+}
+
+/* Content Styling */
+.modal-content { padding: 35px; text-align: center; }
+.modal-content h2 { 
+    color: var(--gold); font-size: 2.2rem; margin-bottom: 10px; 
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+.modal-divider { 
+    width: 100px; height: 2px; background: var(--gold); 
+    margin: 0 auto 20px; 
+}
+.modal-btn { 
+    display: inline-block; padding: 12px 40px; margin-top: 10px;
+    background: transparent; border: 1px solid var(--gold);
+    color: var(--gold); font-weight: bold; text-decoration: none;
+    font-family: inherit; transition: 0.3s;
+    position: relative; overflow: hidden;
+}
+.modal-btn:hover {
+    background: var(--gold); color: black;
+    box-shadow: 0 0 25px var(--gold-glow);
+    letter-spacing: 2px;
+}
+
+/* ANIMATIONS */
+@keyframes scanLine {
+    0% { top: -10%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: 110%; opacity: 0; }
+}
+
+@keyframes panImage {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2); }
+}
+/* Mobile */
+/* =========================================
+   MOBILE RESPONSIVENESS FIXES
+   ========================================= */
+@media screen and (max-width: 768px) {
+    
+    /* 1. Fix Search Box Width */
+    .search-wrap {
+        width: 60%; /* Use percentage instead of fixed px */
+        max-width: 250px; /* Cap it so it's not too huge */
+        padding: 6px 15px; /* Slightly smaller padding */
+    }
+    
+    .search-wrap input {
+        font-size: 0.9rem; /* Prevent zoom on iOS */
+    }
+
+    /* 2. Adjust Nav Padding */
+    nav {
+        padding: 0.8rem 1rem; /* Less padding on sides */
+    }
+
+    /* 3. Adjust Logo Size */
+    .logo { font-size: 1.2rem; }
+    .logo-img { width: 30px; }
+
+    /* 4. Filter Dock (Ensure it fits) */
+    .filter-dock {
+        width: 95%; /* Take almost full width */
+        bottom: 20px; /* Slightly lower */
+        gap: 5px; /* Tighter gap */
+    }
+    
+    .filter-btn {
+        padding: 6px 12px; /* Smaller buttons */
+        font-size: 0.8rem;
+    }
+
+}
+@keyframes pulse { 0% { opacity: 1; transform: translate(-50%,-50%) scale(0.5); } 100% { opacity: 0; transform: translate(-50%,-50%) scale(1.5); } }
+/* HERO TITLE ANIMATION */
+.logo span {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--gold) 0%, #fff 50%, var(--gold) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shineText 5s linear infinite, slideInHero 1.5s ease-out forwards;
+    opacity: 0; /* Starts hidden */
+}
+
+/* The Shine Effect */
+@keyframes shineText {
+    to { background-position: 200% center; }
+}
+
+/* The Entrance Effect */
+@keyframes slideInHero {
+    0% { opacity: 0; transform: translateY(-20px) scale(0.9); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+/* =========================================
+   4. PRELOADER (THE PORTAL)
+   ========================================= */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease-in-out;
+}
+
+.loader-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ring-outer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px solid transparent;
+    border-top-color: var(--gold);
+    border-bottom-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 3s linear infinite;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+}
+
+.ring-inner {
+    position: absolute;
+    width: 70%;
+    height: 70%;
+    border: 2px solid transparent;
+    border-left-color: var(--gold-glow);
+    border-right-color: var(--gold-glow);
+    border-radius: 50%;
+    animation: spin-reverse 1.5s linear infinite;
+}
+
+.pyramid-core {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 35px solid var(--gold);
+    filter: drop-shadow(0 0 10px var(--gold));
+    animation: pulse-core 1s ease-in-out infinite alternate;
+}
+
+.loading-text {
+    position: absolute;
+    bottom: -40px;
+    color: var(--gold);
+    font-family: 'Reem Kufi', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    animation: fade-text 2s infinite;
+    width: 200px;
+    text-align: center;
+}
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes spin-reverse { 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); } }
+@keyframes pulse-core { 0% { opacity: 0.6; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.1); filter: drop-shadow(0 0 20px var(--gold)); } }
+@keyframes fade-text { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+/* =========================================
+   BOTTOM FLOATING DOCK
+   ========================================= */
+.filter-dock {
+    position: fixed;
+    bottom: 30px;          /* Distance from bottom */
+    left: 50%;
+    transform: translateX(-50%); /* Center Horizontally */
+    z-index: 200;          /* Above everything */
+    
+    display: flex;
+    gap: 8px;
+    padding: 10px 15px;
+    
+    /* The Glass Look */
+    background: rgba(20, 20, 25, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    
+    /* Allow scrolling on small phones */
+    max-width: 90%;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+}
+
+/* Hide scrollbar Chrome/Safari */
+.filter-dock::-webkit-scrollbar { display: none; }
+
+.filter-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #bbb;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    flex-shrink: 0; /* Prevent squishing */
+    font-family: var(--font-ar-text); 
+    font-weight: bold;
+
+}
+body.english-mode .filter-btn {
+    font-family: var(--font-en-text);
+}
+.filter-btn:hover {
+    color: var(--gold);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.filter-btn.active {
+    background: var(--gold);
+    color: #000;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    transform: scale(1.05);
+}

@@ -1,48 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Egypt: Ancient Future</title>
-    <link rel="stylesheet" href="styleshome.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مصر: إمبراطورية الخلود</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="home.css">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="مصر: إمبراطورية الخلود">
+    <meta property="og:description" content="رحلة تفاعلية عبر الزمن لاستكشاف معالم مصر القديمة.">
+    <meta property="og:image" content="HomeBG.png">
 </head>
 <body>
 
-    <div class="bg-layer"></div>
-    <div class="scanlines"></div>
-
-    <div class="holo-hud-container">
-        <div class="holo-grid">
-            <div class="hex-item"><i class="fas fa-pyramid"></i><span>PYRAMIDS</span></div>
-            <div class="hex-item"><i class="fas fa-cat"></i><span>SPHINX</span></div>
-            <div class="hex-item"><i class="fas fa-landmark"></i><span>TEMPLES</span></div>
-            <div class="hex-item"><i class="fas fa-scroll"></i><span>HISTORY</span></div>
-        </div>
-        <div class="holo-text">
-            SYSTEM: ONLINE<br>
-            COORDS: 29.9792° N
-        </div>
-        <div class="hud-line"></div>
-    </div>
-
-
-
-    <div class="hero-interface">
-        <div class="pyramid-trigger">
-            <div class="holo-triangle"></div>
-            
-            <button id="discoverBtn" class="cyber-btn-main">
-                DISCOVER EGYPT
-                <div class="btn-scanline"></div>
-            </button>
-            
-            <div class="ripple r1"></div>
-            <div class="ripple r2"></div>
+    <div id="preloader">
+        <div class="loader-container">
+            <div class="ring-outer"></div>
+            <div class="ring-inner"></div>
+            <div class="pyramid-core"></div>
+            <p class="loading-text" data-lang="loading">جاري فتح البوابة...</p>
         </div>
     </div>
 
-    <script src="apphome.js"></script>
+    <div class="bg-container">
+        <div class="overlay"></div>
+    </div>
+
+    <nav>
+        <div class="logo">
+            <img src="logo.png" alt="Logo" class="logo-img">
+            <span data-lang="logo">مصر القديمة</span>
+        </div>
+        
+        <div class="lang-switch">
+            <span id="lang-ar" class="active">عربي</span> | <span id="lang-en">EN</span>
+        </div>
+    </nav>
+
+    <main>
+        <div class="hero-title">
+            <h1 data-lang="title">مـصـر</h1>
+            <p class="subtitle" data-lang="subtitle">حـضـارة الـخـلـود</p>
+        </div>
+
+        <a href="map.html" class="cta-button" id="startBtn" data-lang="cta">
+            ابدأ الرحلة
+        </a>
+
+        <div class="artifact-card">
+            <div class="artifact-label" data-lang="relic_label">أثر اليوم</div>
+            <h3 class="artifact-name" data-lang="relic_name">قناع توت عنخ آمون</h3>
+            <p class="artifact-desc" data-lang="relic_desc">تم اكتشافه عام 1922، ويُعد الرمز الأشهر والأنقى للحضارة المصرية القديمة.</p>
+        </div>
+        
+        <div class="social-links">
+            <a href="https://www.facebook.com/nasser.girgis.1/">FB</a>
+            <a href="https://www.instagram.com/kyronasser/">IG</a>
+            <a href="#">X</a>
+        </div>
+    </main>
+
+    <div class="timeline-container">
+        <div class="timeline-info" id="timelineText">3100 ق.م: توحيد القطرين على يد مينا</div>
+        
+        <div class="timeline-line">
+            <div class="timeline-dot active" 
+                 data-text="3100 ق.م: توحيد القطرين على يد الملك مينا"
+                 data-text-en="3100 BC: Unification of Upper & Lower Egypt"></div>
+                 
+            <div class="timeline-dot" 
+                 data-text="2560 ق.م: اكتمال بناء الهرم الأكبر"
+                 data-text-en="2560 BC: Completion of the Great Pyramid"></div>
+                 
+            <div class="timeline-dot" 
+                 data-text="1274 ق.م: معركة قادش العظيمة"
+                 data-text-en="1274 BC: The Battle of Kadesh"></div>
+                 
+            <div class="timeline-dot" 
+                 data-text="332 ق.م: دخول الإسكندر الأكبر مصر"
+                 data-text-en="332 BC: Alexander the Great Arrives"></div>
+                 
+            <div class="timeline-dot" 
+                 data-text="30 ق.م: نهاية عصر البطالمة ووفاة كليوباترا"
+                 data-text-en="30 BC: Death of Cleopatra"></div>
+        </div>
+    </div>
+
+    <script src="home.js"></script>
 </body>
 </html>

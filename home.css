@@ -1,0 +1,530 @@
+/* =========================================
+   1. FONTS IMPORTS
+   ========================================= */
+/* Arabic Fonts (Cairo & Reem Kufi) */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&family=Reem+Kufi:wght@400;700&display=swap');
+/* English Fonts (Cinzel & Raleway) */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Raleway:wght@300;400&display=swap');
+
+/* =========================================
+   2. GLOBAL VARIABLES & RESET
+   ========================================= */
+:root {
+    --gold: #D4AF37;
+    --gold-glow: #aa8c2c;
+    --dark-overlay: rgba(0, 0, 0, 0.7);
+    --glass-bg: rgba(0, 0, 0, 0.4);
+    --text-main: #f4f1ea;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Cairo', sans-serif; /* Default Arabic Font */
+    background-color: #050505;
+    color: var(--text-main);
+    overflow: hidden; /* Hidden on desktop for immersion */
+    height: 100vh;
+    width: 100vw;
+    transition: all 0.5s ease; /* Smooth language switch */
+}
+
+/* =========================================
+   3. ENGLISH MODE OVERRIDES
+   ========================================= */
+body.english-mode {
+    direction: ltr;
+    font-family: 'Raleway', sans-serif;
+}
+
+body.english-mode h1,
+body.english-mode .logo,
+body.english-mode .cta-button,
+body.english-mode .artifact-name,
+body.english-mode .timeline-info,
+body.english-mode .loading-text,
+body.english-mode .social-links a {
+    font-family: 'Cinzel', serif;
+    letter-spacing: 2px;
+}
+
+body.english-mode h1 {
+    letter-spacing: 15px;
+    font-size: 5rem;
+}
+
+/* Reverse Flex Directions for English */
+body.english-mode .timeline-line {
+    flex-direction: row;
+}
+
+/* Flip positions for English */
+body.english-mode .timeline-container {
+    left: 10%;
+    right: auto;
+}
+
+body.english-mode .social-links {
+    right: 50px;
+    left: auto;
+}
+
+body.english-mode .artifact-card {
+    text-align: left;
+    right: 5%;
+    left: auto;
+}
+
+body.english-mode .artifact-card:hover {
+    transform: translateY(-52%);
+}
+
+body.english-mode .cta-button::before {
+    left: -100%;
+    right: auto;
+}
+
+body.english-mode .cta-button:hover::before {
+    left: 100%;
+}
+
+/* =========================================
+   4. PRELOADER (THE PORTAL)
+   ========================================= */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease-in-out;
+}
+
+.loader-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ring-outer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px solid transparent;
+    border-top-color: var(--gold);
+    border-bottom-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 3s linear infinite;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+}
+
+.ring-inner {
+    position: absolute;
+    width: 70%;
+    height: 70%;
+    border: 2px solid transparent;
+    border-left-color: var(--gold-glow);
+    border-right-color: var(--gold-glow);
+    border-radius: 50%;
+    animation: spin-reverse 1.5s linear infinite;
+}
+
+.pyramid-core {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 35px solid var(--gold);
+    filter: drop-shadow(0 0 10px var(--gold));
+    animation: pulse-core 1s ease-in-out infinite alternate;
+}
+
+.loading-text {
+    position: absolute;
+    bottom: -40px;
+    color: var(--gold);
+    font-family: 'Reem Kufi', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    animation: fade-text 2s infinite;
+    width: 200px;
+    text-align: center;
+}
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes spin-reverse { 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); } }
+@keyframes pulse-core { 0% { opacity: 0.6; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.1); filter: drop-shadow(0 0 20px var(--gold)); } }
+@keyframes fade-text { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+/* =========================================
+   5. BACKGROUND
+   ========================================= */
+.bg-container {
+    position: fixed;
+    top: -5%;
+    left: -5%;
+    width: 110%;
+    height: 110%;
+    z-index: -1;
+    background-image: url('HomeBG.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.1s ease-out;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 90%);
+}
+
+/* =========================================
+   6. NAVIGATION
+   ========================================= */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 3rem;
+    position: relative;
+    z-index: 10;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Reem Kufi', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--gold);
+}
+
+.logo-img {
+    width: 40px;
+    height: auto;
+    filter: drop-shadow(0 0 5px var(--gold-glow));
+}
+
+.lang-switch {
+    color: var(--text-main);
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    direction: ltr; /* Always LTR to keep EN/AR order */
+}
+
+.lang-switch span {
+    opacity: 0.5;
+    transition: 0.3s;
+}
+
+.lang-switch span.active,
+.lang-switch span:hover {
+    opacity: 1;
+    color: var(--gold);
+}
+
+/* =========================================
+   7. MAIN CONTENT AREA
+   ========================================= */
+main {
+    position: relative;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+}
+
+.hero-title {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+h1 {
+    font-family: 'Reem Kufi', sans-serif;
+    font-size: 6rem;
+    font-weight: 700;
+    text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    background: linear-gradient(to bottom, #fff, #b88a00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+p.subtitle {
+    font-size: 1.5rem;
+    color: var(--gold);
+    opacity: 0.9;
+    font-family: 'Reem Kufi', sans-serif;
+}
+
+.cta-button {
+    position: relative;
+    padding: 1.2rem 4rem;
+    font-family: 'Reem Kufi', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--gold);
+    background: transparent;
+    border: 2px solid var(--gold);
+    cursor: pointer;
+    transition: all 0.4s ease;
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.cta-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.4), transparent);
+    transition: 0.5s;
+}
+
+.cta-button:hover {
+    background: rgba(212, 175, 55, 0.1);
+    box-shadow: 0 0 20px var(--gold-glow), inset 0 0 10px var(--gold-glow);
+}
+
+.cta-button:hover::before {
+    right: 100%;
+}
+
+/* Artifact Card */
+.artifact-card {
+    position: absolute;
+    left: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 280px;
+    padding: 25px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 8px;
+    transition: 0.3s;
+    cursor: pointer;
+    text-align: right;
+}
+
+.artifact-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-52%);
+}
+
+.artifact-label {
+    font-size: 0.8rem;
+    color: var(--gold);
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.artifact-name {
+    font-family: 'Reem Kufi', sans-serif;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    color: #fff;
+}
+
+.artifact-desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    opacity: 0.8;
+}
+
+/* Social Links (Desktop) */
+.social-links {
+    position: absolute;
+    bottom: 40px;
+    left: 50px;
+    display: flex;
+    gap: 20px;
+    z-index: 10;
+}
+
+.social-links a {
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: bold;
+    opacity: 0.6;
+    transition: 0.3s;
+    font-size: 1rem;
+    font-family: 'Reem Kufi', sans-serif;
+    letter-spacing: 1px;
+}
+
+.social-links a:hover {
+    color: var(--gold);
+    opacity: 1;
+    text-shadow: 0 0 10px var(--gold);
+}
+
+/* =========================================
+   8. TIMELINE
+   ========================================= */
+.timeline-container {
+    position: absolute;
+    bottom: 80px; /* Raised up */
+    width: 70%;
+    right: 15%; /* Centered */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+}
+
+.timeline-info {
+    margin-bottom: 15px;
+    font-family: 'Reem Kufi', sans-serif;
+    color: var(--gold);
+    font-size: 1.2rem;
+    height: 30px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.fade-in {
+    opacity: 1 !important;
+}
+
+.timeline-line {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row-reverse;
+}
+
+.timeline-dot {
+    width: 12px;
+    height: 12px;
+    background-color: #333;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+    position: relative;
+}
+
+.timeline-dot:hover,
+.timeline-dot.active {
+    background-color: var(--gold);
+    box-shadow: 0 0 10px var(--gold);
+    transform: scale(1.4);
+}
+
+/* =========================================
+   9. MOBILE RESPONSIVENESS (FIXED)
+   ========================================= */
+@media screen and (max-width: 768px) {
+    /* 1. Allow scrolling on mobile */
+    body {
+        overflow-y: auto;
+    }
+
+    h1 {
+        font-size: 3.5rem;
+    }
+
+    p.subtitle {
+        font-size: 1rem;
+    }
+
+    nav {
+        padding: 1.5rem;
+    }
+
+    /* 2. Reset Main height so content doesn't get squished */
+    main {
+        height: auto;
+        min-height: 100vh;
+        justify-content: flex-start;
+        padding-top: 100px;
+        padding-bottom: 250px; /* IMPORTANT: Create space at bottom for Socials/Timeline */
+    }
+
+    /* 3. Fix Artifact Card Position & Margin */
+    .artifact-card {
+        position: relative;
+        left: auto;
+        top: auto;
+        right: auto;
+        transform: none;
+        width: 90%;
+        margin: 40px auto; /* Margin to separate from button */
+        text-align: center;
+        background: rgba(0, 0, 0, 0.7);
+    }
+
+    .artifact-card:hover {
+        transform: none;
+    }
+
+    body.english-mode .artifact-card {
+        text-align: center;
+    }
+
+    /* 4. Fix Timeline Position */
+    .timeline-container {
+        position: fixed; /* Keep pinned to bottom */
+        width: 90%;
+        right: 5%;
+        bottom: 70px; /* Positioned above social icons */
+        left: 5%;
+        z-index: 20; /* Ensure on top of background */
+        background: radial-gradient(circle, rgba(0,0,0,0.8) 0%, transparent 100%); /* Readability */
+    }
+
+    .timeline-info {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+
+    .timeline-dot {
+        width: 15px;
+        height: 15px;
+    }
+
+    /* 5. Fix Social Links Position */
+    .social-links {
+        position: fixed; /* Keep pinned to bottom */
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+        z-index: 20;
+    }
+
+    body.english-mode .social-links {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+    }
+}
