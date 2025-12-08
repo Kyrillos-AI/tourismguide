@@ -207,11 +207,18 @@ nav:hover {
 
 /* --- MOBILE ADJUSTMENT --- */
 @media screen and (max-width: 768px) {
+    
+    /* 1. Force Nav to stay on ONE LINE */
     nav {
         top: 15px;
-        min-width: 90%;      /* Wider on phone */
-        padding: 8px 20px;
-        gap: 10px;
+        width: 95%;           /* nearly full width */
+        min-width: 0;         /* Allow shrinking */
+        max-width: 100%;
+        padding: 10px 15px;   /* Smaller padding */
+        
+        flex-wrap: nowrap;    /* NEVER wrap to 2 lines */
+        gap: 10px;            /* Tighter spacing */
+        justify-content: space-between;
     }
     
     .logo span {
